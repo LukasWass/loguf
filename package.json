@@ -1,0 +1,35 @@
+{
+  "name": "loguf",
+  "version": "1.0.0",
+  "description": "Log User Flow",
+  "main": "./lib/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LukasWass/loguf.git"
+  },
+  "keywords": [
+    "uflog",
+    "log"
+  ],
+  "author": {
+    "name": "Lukas Wass",
+    "email": "dev@lukaswass.se",
+    "url": "https://github.com/LukasWass"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LukasWass/loguf/issues"
+  },
+  "homepage": "https://github.com/LukasWass/loguf#readme",
+  "dependencies": {
+    "node-fetch": "^2.6.1",
+    "typescript": "^4.1.3"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^2.5.7"
+  }
+}
