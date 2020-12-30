@@ -20,7 +20,7 @@
     "email": "dev@lukaswass.se",
     "url": "https://github.com/LukasWass"
   },
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/LukasWass/loguf/issues"
   },
