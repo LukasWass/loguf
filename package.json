@@ -1,6 +1,6 @@
 {
   "name": "loguf",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Log User Flow",
   "main": "./lib/index.js",
   "scripts": {
@@ -12,8 +12,10 @@
     "url": "https://github.com/LukasWass/loguf.git"
   },
   "keywords": [
-    "uflog",
-    "log"
+    "loguf",
+    "log",
+    "user",
+    "flow"
   ],
   "author": {
     "name": "Lukas Wass",
