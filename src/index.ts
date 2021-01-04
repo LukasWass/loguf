@@ -11,6 +11,7 @@ enum DataType {
 }
 
 interface IPublishData {
+    timestamp: number;
     userId: string;
     type: DataType;
     event: string;
@@ -18,73 +19,78 @@ interface IPublishData {
 }
 
 export default class Loguf {
-    private static Uri: string = "";
-    private static UserId: string = "";
-    private static Debug: boolean = false;
+    private static uri: string = "";
+    private static userId: string = "";
+    private static debug: boolean = false;
 
-    public static SetDebug = (debug: boolean): void => {
-        Loguf.Debug = debug;
+    public static setDebug = (debug: boolean): void => {
+        Loguf.debug = debug;
     }
 
-    private static LocalDebugLog = (text: string): void => {
-        if (Loguf.Debug) {
+    private static localDebugLog = (text: string, displayWarning?: boolean): void => {
+        if (Loguf.debug) {
             console.log(`Loguf: ${text}`);
+
+            if (displayWarning !== undefined && displayWarning)
+                console.warn(`Loguf: ${text}`);
         }
     }
 
-    public static SetUri = (uri: string): void => {
-        Loguf.Uri = uri;
+    public static setUri = (uri: string): void => {
+        Loguf.uri = uri;
     }
 
-    public static SetUserId = (userId: string): void => {
-        Loguf.LocalDebugLog(`logging for userId: ${userId}`);
+    public static setUserId = (userId: string): void => {
+        Loguf.localDebugLog(`logging for userId: ${userId}`);
 
-        Loguf.UserId = userId;
+        Loguf.userId = userId;
     }
 
-    private static CheckIfConnectionDataIsGood = (): boolean => {
-        if (Loguf.Uri.length < 1)
-            Loguf.LocalDebugLog("uri needs to be set. Use SetUri().");
+    private static checkIfConnectionDataIsGood = (): boolean => {
+        if (Loguf.uri.length < 1)
+            Loguf.localDebugLog("uri needs to be set. Use SetUri().");
 
-        if (Loguf.UserId.length < 1)
-            Loguf.LocalDebugLog("missing userId. Use SetUserId().");
+        if (Loguf.userId.length < 1)
+            Loguf.localDebugLog("missing userId. Use SetUserId().");
 
-        return (Loguf.Uri.length > 0 && Loguf.UserId.length > 0);
+        return (Loguf.uri.length > 0 && Loguf.userId.length > 0);
     }
 
-    private static PublishLog = async (data: IPublishData): Promise<void> => {
-        if (!Loguf.CheckIfConnectionDataIsGood()) {
-            Loguf.LocalDebugLog(`${data.type} - ${data.event}\t${(data.properties) && `properties: ${data.properties}`}`);
+    private static publishLog = async (data: IPublishData): Promise<void> => {
+        if (Loguf.checkIfConnectionDataIsGood()) {
+            Loguf.localDebugLog(`${data.type} - ${data.event}\t${(data.properties) && `properties: ${JSON.stringify(data.properties)}`}`);
 
-            const res: IResponse = await (await fetch(Loguf.Uri, {
+            const res: IResponse = await (await fetch(Loguf.uri, {
                 method: "POST",
                 body: JSON.stringify(data)
             })).json();
 
             if (!res.success)
-                Loguf.LocalDebugLog(`failed to publish log: ${res.message} `);
+                Loguf.localDebugLog(`failed to publish log: ${res.message}`);
         }
     }
 
-    public static Event = async (event: string, properties?: any): Promise<void> => {
+    public static event = async (event: string, properties?: any): Promise<void> => {
         const data: IPublishData = {
-            userId: Loguf.UserId,
+            timestamp: new Date().valueOf(),
+            userId: Loguf.userId,
             type: DataType.Event,
             event: event,
             properties: properties
         };
 
-        await Loguf.PublishLog(data);
+        await Loguf.publishLog(data);
     }
 
-    public static Exception = async (event: string, properties?: any): Promise<void> => {
+    public static exception = async (event: string, properties?: any): Promise<void> => {
         const data: IPublishData = {
-            userId: Loguf.UserId,
+            timestamp: new Date().valueOf(),
+            userId: Loguf.userId,
             type: DataType.Exception,
             event: event,
             properties: properties
         };
 
-        await Loguf.PublishLog(data);
+        await Loguf.publishLog(data);
     }
 }

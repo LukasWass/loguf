@@ -1,6 +1,6 @@
 {
   "name": "loguf",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Log User Flow",
   "main": "./lib/index.js",
   "scripts": {
