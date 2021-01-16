@@ -58,7 +58,7 @@ export default class Loguf {
 
     private static publishLog = async (data: IPublishData): Promise<void> => {
         if (Loguf.checkIfConnectionDataIsGood()) {
-            Loguf.localDebugLog(`${data.type} - ${data.event}\t${(data.properties) && `properties: ${JSON.stringify(data.properties)}`}`);
+            Loguf.localDebugLog(`${DataType[data.type].toLowerCase()} - ${data.event}\t${(data.properties) && `properties: ${JSON.stringify(data.properties)}`}`);
 
             const res: IResponse = await (await fetch(Loguf.uri, {
                 method: "POST",
